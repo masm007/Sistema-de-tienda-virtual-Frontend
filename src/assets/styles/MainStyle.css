@@ -1,0 +1,13 @@
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 10px;
+}
+
+.container{
+    padding: 10px;
+    margin: 5px solid black;
+}
+
+.container button{
+    display: block;
+}
