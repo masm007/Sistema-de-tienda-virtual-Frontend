@@ -1,13 +1,175 @@
-*{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 10px;
+* {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.container{
-    padding: 10px;
-    margin: 5px solid black;
+.container {
+  display: flex;
+  min-height: 75vh;
+  margin: 20px;
+  padding: 10px;
+  flex-direction: column;
+  row-gap: 20px;
+  justify-content: center;
 }
 
-.container button{
-    display: block;
+.authElement {
+  display: flex;
+  justify-content: center;
+  column-gap: 5px;
+  width: 70%;
+}
+
+.container button {
+  display: block;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.authContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.authContainer div {
+  justify-content: center;
+  align-items: center;
+}
+
+/*
+PAlETA DE COLORES
+#012619
+#4EA664
+#78BF9E
+#A9D9C2
+#F2E6D8
+#E8E5DE
+*/
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* 1rem o 1em */
+p {
+  /*font-size: 1em;*/
+  font-size: 1rem;
+}
+
+h1 {
+  text-align: center;
+}
+
+.Header {
+  background-color: #78bf9e;
+  text-align: center;
+}
+
+.headerElement {
+  margin: 0px;
+  padding: 5px;
+}
+
+.NavBar {
+  background-color: #78bf9e;
+  display: block;
+  text-align: center;
+  overflow-y: hidden;
+  overflow-x: auto;
+  padding: 5px;
+}
+
+.navbarElement {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+.cardMainContainer {
+  text-align: center;
+}
+
+.Card {
+  background-color: #012619;
+  padding: 5px;
+  margin: 20px;
+  /*scroll-snap-align: start;*/
+}
+
+.carrouselCards {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1em;
+  overflow-x: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  /*scroll-snap-type: x mandatory;*/
+}
+
+img {
+  /*object-fit: cover*/
+}
+
+.carrouselCards::-webkit-scrollbar {
+}
+
+.cardElement {
+}
+
+.infoContent {
+  text-align: center;
+  align-items: center;
+  height: auto;
+  display: block;
+  overflow: auto;
+}
+
+.infoElement {
+  padding: 10px;
+  margin: 10px;
+}
+
+img.infoElement {
+  margin: 15px 10px;
+  /*border: 2px solid black;*/
+  transition: transform 0.2s ease-in-out;
+}
+
+img.infoElement:hover {
+  transform: scale(1.05);
+}
+
+.Footer {
+  /*  min-height: 40vh; */
+  width: 100vw;
+  background-image: linear-gradient(to bottom, #78bf9e, #4ea664);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.footerContent {
+  padding: 5px;
+}
+
+.footerElement {
+  color: black;
+  margin: 5px;
+  padding: 5px;
+}
+
+p.footerElement {
+  display: block;
+  font-weight: 500;
 }

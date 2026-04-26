@@ -5,9 +5,9 @@ import "../assets/styles/MainStyle.css";
 
 type Props = {};
 
-export const MainLayout = (props: Props) => {
+export const AuthLayout = (props: Props) => {
   return (
-    <div className="mainContainer">
+    <div className="authContainer">
       <Outlet />
       <Footer></Footer>
     </div>
