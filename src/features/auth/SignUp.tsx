@@ -38,7 +38,6 @@ export const SignUp = (props: Props) => {
   const [Lastname, setLastname] = useState("");
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
-  //const [User, setUser] = useState<UserType | null>(null);
 
   const handleSignUp = async () => {
     try {

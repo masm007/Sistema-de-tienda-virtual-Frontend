@@ -1,5 +1,6 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
+import { Typography } from "@mui/material";
 import { LinkedIn, GitHub, Email, WhatsApp, Phone } from "@mui/icons-material";
 import "../../assets/styles/MainStyle.css";
 
@@ -76,7 +77,9 @@ export const Footer = (props: Props) => {
       </div>
 
       <div className="footerContent">
-        <p className="footerElement">Marco Antonio Salazar Mejia</p>
+        <Typography variant="body1" className="footerElement">
+          Marco Antonio Salazar Mejia
+        </Typography>
         <IconButton
           className="footerElement"
           sx={{
@@ -85,9 +88,13 @@ export const Footer = (props: Props) => {
         >
           <Phone />
         </IconButton>
-        <p className="footerElement" style={{ display: "inline-block" }}>
+        <Typography
+          variant="body1"
+          className="footerElement"
+          style={{ display: "inline-block" }}
+        >
           0984183500
-        </p>
+        </Typography>
       </div>
     </footer>
   );

@@ -64,7 +64,13 @@ export const Login = (props: Props) => {
       <Box className="authElement">
         <img width={"250px"} height={"125px"} src={logo} alt="" />
       </Box>
-      <Typography className="authElement" sx={{ padding: "10px" }} variant="h5">
+      <Typography
+        className="authElement"
+        sx={{
+          padding: "10px",
+        }}
+        variant="h5"
+      >
         Ingresa tu info para iniciar sesión
       </Typography>
       <TextField
@@ -112,7 +118,12 @@ export const Login = (props: Props) => {
       >
         Iniciar sesión
       </Button>
-      <Typography sx={{ padding: "10px" }} variant="h6">
+      <Typography
+        sx={{
+          padding: "10px",
+        }}
+        variant="h6"
+      >
         ¿No tienes una cuenta?{" "}
         <Link component={RouterLink} to="./signUp" variant="h6">
           Regístrate
