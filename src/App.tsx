@@ -1,10 +1,10 @@
-import { MainLayout } from "./layout/MainLayout.tsx";
-import { AuthLayout } from "./layout/AuthLayout.tsx";
-import { Login } from "./features/auth/Login.tsx";
-import { SignUp } from "./features/auth/SignUp.tsx";
-import { Home } from "./layout/Home.tsx";
-import { Routes, Route, Link } from "react-router-dom";
-import { PrivateRoute } from "./routes/PrivateRoute.tsx";
+import { MainLayout } from "./layout/MainLayout";
+import { AuthLayout } from "./layout/AuthLayout";
+import { Login } from "./features/auth/Login";
+import { SignUp } from "./features/auth/SignUp";
+import { Home } from "./layout/Home";
+import { Routes, Route } from "react-router-dom";
+import { PrivateRoute } from "./routes/PrivateRoute";
 
 function App() {
   return (
