@@ -1,14 +1,31 @@
 import { Button, Typography, Box, IconButton } from "@mui/material";
 import foto from "../../assets/images/tiendaVirtual.png";
 import { InformationChip } from "../../components/ui/InformationChip";
-import { ShoppingCart } from "@mui/icons-material";
+import { ShoppingCart, More } from "@mui/icons-material";
+import type { Product } from "../../types/Product";
+import type { Category } from "../../types/Category";
 import React from "react";
 
-type Props = {};
+type Props = {
+  product: Product;
+  categories: Category[];
+};
 
 export const ProductCard = (props: Props) => {
+  const categoryName = props.categories?.find(
+    (c) => c.id === props.product.categoryId,
+  )?.name;
+
   const textStyle = {
     fontWeight: 400,
+    textAlign: "center",
+    margin: "3px",
+  };
+
+  const buttonStyle = {
+    "&:hover": {
+      backgroundColor: "#012619",
+    },
     textAlign: "center",
     margin: "3px",
   };
@@ -46,23 +63,38 @@ export const ProductCard = (props: Props) => {
         }}
       >
         {/*tendra un hoover*/}
-        <img
-          src={foto}
-          alt="sustituto"
-        />
+        <img src={props.product.images?.[0]?.url ?? foto} alt="sustituto" />
         <InformationChip
           text="Esta en promocion!!"
           sizeC="medium"
         ></InformationChip>
-        <Typography sx={textStyle}>Categoria</Typography>
+        <Typography sx={textStyle}>
+          {categoryName ?? "Sin categoría"}
+        </Typography>
         <Typography
           sx={{ fontWeight: 500, textAlign: "center", margin: "3px" }}
         >
-          Esto es una demo del titulo
+          {props.product.name}
         </Typography>
-        <Typography sx={textStyle}>Precio</Typography>
-        <Button variant="contained" endIcon={<ShoppingCart />}>
+        <Typography sx={textStyle}>{props.product.price}</Typography>
+        <Button
+          fullWidth
+          sx={{ backgroundColor: "purple", ...buttonStyle }}
+          variant="contained"
+          endIcon={<ShoppingCart />}
+        >
           Agregar al carrito
+        </Button>
+        <Button
+          fullWidth
+          sx={{
+            backgroundColor: "#78BF9E",
+            ...buttonStyle,
+          }}
+          variant="contained"
+          endIcon={<More />}
+        >
+          Ver detalles
         </Button>
       </Box>
     </>
