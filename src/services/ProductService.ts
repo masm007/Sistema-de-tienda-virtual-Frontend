@@ -17,3 +17,20 @@ export const getProductsRequest = async () => {
     //return response.json();
     return response.json() as Promise<Product[]>;
 }
+
+export const getProductById = async (id: number) => {
+        const response = await fetch(`${API_URL}/products/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    if (!response.ok) {
+        if(response.status === 404){
+            throw new Error("Página no encontrada"); 
+        }
+        throw new Error("Ocurrió un error");
+    }
+    //return response.json();
+    return response.json() as Promise<Product>;
+}

@@ -16,7 +16,8 @@ import {
 import Badge from "@mui/material/Badge";
 import { ShoppingCart, Menu } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-import React from "react";
+import React, { useContext } from "react";
+import { CartContext } from "../../providers/CartProvider";
 
 type Props = {
   openCart: () => void;
@@ -36,6 +37,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export const NavegationBar = (props: Props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const cart = useContext(CartContext);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -124,7 +126,7 @@ export const NavegationBar = (props: Props) => {
               ))}
 
               <IconButton aria-label="cart" onClick={props.openCart}>
-                <StyledBadge badgeContent={4} color="secondary">
+                <StyledBadge badgeContent={cart?.cart.length ? cart?.cart.length : 0} color="secondary">
                   <ShoppingCart></ShoppingCart>
                 </StyledBadge>
               </IconButton>

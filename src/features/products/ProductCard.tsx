@@ -5,6 +5,7 @@ import { ShoppingCart, More } from "@mui/icons-material";
 import type { Product } from "../../types/Product";
 import type { Category } from "../../types/Category";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   product: Product;
@@ -12,6 +13,8 @@ type Props = {
 };
 
 export const ProductCard = (props: Props) => {
+  const navigate = useNavigate();
+  
   const categoryName = props.categories?.find(
     (c) => c.id === props.product.categoryId,
   )?.name;
@@ -29,6 +32,10 @@ export const ProductCard = (props: Props) => {
     textAlign: "center",
     margin: "3px",
   };
+
+  const handleNavigate = (id: number) => {
+    navigate(`/products/${id}`);
+  }
 
   return (
     <>
@@ -87,6 +94,7 @@ export const ProductCard = (props: Props) => {
         </Button>
         <Button
           fullWidth
+          onClick={() => handleNavigate(props.product.id)}
           sx={{
             backgroundColor: "#78BF9E",
             ...buttonStyle,

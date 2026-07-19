@@ -7,7 +7,7 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
-import React from "react";
+import { useCart } from "../../hooks/useCart";
 
 type Props = {
   open: boolean;
@@ -15,13 +15,15 @@ type Props = {
 };
 
 export const CartModal = (props: Props) => {
+  const {cart, getSubtotal} = useCart();
+
   return (
     <>
       <Dialog open={props.open} onClose={props.onClose}>
         <DialogTitle>Carrito de compras</DialogTitle>
         {/* Renderizar CartItem */}
         <DialogContent>
-          <Typography>Subtotal: $0,00</Typography>
+          <Typography>Subtotal: {getSubtotal().toFixed(2)}</Typography>
         </DialogContent>
         <DialogActions>
           <Button>Ver carrito</Button>
