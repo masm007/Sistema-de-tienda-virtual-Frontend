@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import type { Product } from "../../types/Product";
 import { getProductById } from "../../services/ProductService";
-import { Alert, Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { CartContext } from "../../providers/CartProvider";
 import { useCart } from "../../hooks/useCart";
 import { Favorite, ShoppingCart, WhatsApp } from "@mui/icons-material";
 
