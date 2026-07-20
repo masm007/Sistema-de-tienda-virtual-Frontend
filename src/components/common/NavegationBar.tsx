@@ -16,7 +16,9 @@ import {
 import Badge from "@mui/material/Badge";
 import { ShoppingCart, Menu } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-import React from "react";
+import React, { useContext } from "react";
+import { CartContext } from "../../providers/CartProvider";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   openCart: () => void;
@@ -35,7 +37,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 export const NavegationBar = (props: Props) => {
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const cart = useContext(CartContext);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -46,7 +50,14 @@ export const NavegationBar = (props: Props) => {
       onClick={handleDrawerToggle}
       sx={{ textAlign: "center", backgroundColor: "#78bf9e", boxShadow: 3 }}
     >
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography
+        variant="h6"
+        sx={{
+          my: 2,
+          cursor: "pointer",
+        }}
+        onClick={() => navigate("/")}
+      >
         Logo de la empresa
       </Typography>
 
@@ -61,7 +72,7 @@ export const NavegationBar = (props: Props) => {
           </ListItem>
         ))}
         <IconButton aria-label="cart" onClick={props.openCart}>
-          <StyledBadge badgeContent={4} color="secondary">
+          <StyledBadge badgeContent={cart?.cart.length ? cart?.cart.length : 0} color="secondary">
             <ShoppingCart></ShoppingCart>
           </StyledBadge>
         </IconButton>
@@ -97,9 +108,11 @@ export const NavegationBar = (props: Props) => {
 
             <Typography
               variant="h6"
+              onClick={() => navigate("/")}
               sx={{
                 color: "black",
                 flexGrow: 1,
+                cursor: "pointer",
                 display: {
                   xs: "none",
                   sm: "block",
@@ -124,7 +137,10 @@ export const NavegationBar = (props: Props) => {
               ))}
 
               <IconButton aria-label="cart" onClick={props.openCart}>
-                <StyledBadge badgeContent={4} color="secondary">
+                <StyledBadge
+                  badgeContent={cart?.cart.length ? cart?.cart.length : 0}
+                  color="secondary"
+                >
                   <ShoppingCart></ShoppingCart>
                 </StyledBadge>
               </IconButton>
