@@ -7,6 +7,7 @@ import { ProductDetail } from "./features/products/ProductDetail";
 import { Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./routes/PrivateRoute";
 import { CartProvider } from "./providers/CartProvider.tsx";
+import { Cart } from "./features/cart/Cart.tsx";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           >
             <Route index element={<Home />} />
             <Route path="products/:id" element={<ProductDetail />} />
+            <Route path="cart" element={<Cart />} />
           </Route>
         </Route>
         {/* Público */}

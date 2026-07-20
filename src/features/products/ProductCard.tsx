@@ -1,11 +1,12 @@
-import { Button, Typography, Box, IconButton } from "@mui/material";
+import { Button, Typography, Box, IconButton, Alert, Snackbar } from "@mui/material";
 import foto from "../../assets/images/tiendaVirtual.png";
 import { InformationChip } from "../../components/ui/InformationChip";
 import { ShoppingCart, More } from "@mui/icons-material";
 import type { Product } from "../../types/Product";
 import type { Category } from "../../types/Category";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../../hooks/useCart";
 
 type Props = {
   product: Product;
@@ -14,7 +15,9 @@ type Props = {
 
 export const ProductCard = (props: Props) => {
   const navigate = useNavigate();
-  
+  const { addToCart } = useCart();
+  const [open, setOpen] = useState(false);
+
   const categoryName = props.categories?.find(
     (c) => c.id === props.product.categoryId,
   )?.name;
@@ -35,7 +38,7 @@ export const ProductCard = (props: Props) => {
 
   const handleNavigate = (id: number) => {
     navigate(`/products/${id}`);
-  }
+  };
 
   return (
     <>
@@ -89,6 +92,10 @@ export const ProductCard = (props: Props) => {
           sx={{ backgroundColor: "purple", ...buttonStyle }}
           variant="contained"
           endIcon={<ShoppingCart />}
+          onClick={() => {
+            addToCart(props.product, 1);
+            setOpen(true);
+          }}
         >
           Agregar al carrito
         </Button>
@@ -104,6 +111,23 @@ export const ProductCard = (props: Props) => {
         >
           Ver detalles
         </Button>
+        <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          onClose={() => setOpen(false)}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+        >
+          <Alert
+            onClose={() => setOpen(false)}
+            severity="success"
+            variant="filled"
+          >
+            Se agregó un producto al carrito.
+          </Alert>
+        </Snackbar>
       </Box>
     </>
   );

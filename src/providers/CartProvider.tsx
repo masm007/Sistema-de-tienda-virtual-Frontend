@@ -75,9 +75,20 @@ export const CartProvider = ({ children }: Props) => {
   };
 
   const changeQuantity = (id: number, quantity: number) => {
+    const existingItem = cart.find((item)=> item.product.id === id);
+    if(!existingItem){
+      return;
+    }
+    if(quantity <= 0){
+      deleteProduct(id);
+      return;
+    }
+    if(quantity > existingItem.product.quantity){
+      return;
+    }
     setCart((currentCart) =>
       currentCart.map((item) =>
-        item.product.id === id ? { ...item, quantity } : item,
+        item.product.id === id ? { ...item, quantity} : item,
       ),
     );
   };
