@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
 import type { Product } from "../types/Product";
-
-const CART_STORAGE_KEY = "cart";
+import { STORAGE_KEYS } from "../constants/storage";
 
 type CartItem = {
   product: Product;
@@ -24,7 +23,7 @@ type Props = {
 
 export const CartProvider = ({ children }: Props) => {
   const [cart, setCart] = useState<CartItem[]>(() => {
-    const localCart = localStorage.getItem("cart");
+    const localCart = localStorage.getItem(STORAGE_KEYS.CART);
     return localCart ? JSON.parse(localCart) : [];
   });
 
@@ -41,7 +40,7 @@ export const CartProvider = ({ children }: Props) => {
   }
 
   useEffect(() => {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (product: Product, quantity: number) => {
