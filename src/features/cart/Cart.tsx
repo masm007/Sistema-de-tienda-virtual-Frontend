@@ -1,4 +1,3 @@
-import React from "react";
 import { CartItem } from "./CartItem";
 import { Box, Button, Typography } from "@mui/material";
 import { useCart } from "../../hooks/useCart";

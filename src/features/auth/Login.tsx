@@ -12,6 +12,7 @@ import logo from "../../assets/images/tiendaVirtual.png";
 import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../../services/AuthService.ts";
 import "../../assets/styles/MainStyle.css";
+import { useAuth } from "../../hooks/useAuth.ts";
 
 type UsuarioType = {
   email: string;
@@ -22,6 +23,7 @@ type Props = {};
 
 export const Login = (props: Props) => {
   const navigate = useNavigate();
+  const { login, loading} = useAuth();
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -38,9 +40,7 @@ export const Login = (props: Props) => {
 
   const handleLogin = async () => {
     try {
-      const data = await loginRequest(Email, Password);
-      // guardar token
-      localStorage.setItem("token", data.token);
+      await login(Email, Password);
       // redirigir
       navigate("/");
     } catch (error) {

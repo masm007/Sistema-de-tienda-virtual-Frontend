@@ -1,12 +1,10 @@
-import React from "react";
-import { ProductCard } from "../features/products/ProductCard.tsx";
+import { ProductCard } from "../products/ProductCard.tsx";
 import { Box } from "@mui/material";
 import { useState, useEffect } from "react";
-import { getProductsRequest } from "../services/ProductService.ts";
-import { getCategoriesRequest } from "../services/CategoryService.ts";
-import type { Product } from "../types/Product.ts";
-import type { Category } from "../types/Category.ts";
-import { NavegationBar } from "../components/common/NavegationBar.tsx";
+import { getProductsRequest } from "../../services/ProductService.ts";
+import { getCategoriesRequest } from "../../services/CategoryService.ts";
+import type { Product } from "../../types/Product.ts";
+import type { Category } from "../../types/Category.ts";
 
 type Props = {};
 
@@ -38,6 +36,7 @@ export const Home = (props: Props) => {
           ></ProductCard>
         ))}
       </Box>
+      {/* Poner las categorias con paginacion estilo mercado libre*/}
     </div>
   );
 };

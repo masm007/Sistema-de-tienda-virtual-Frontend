@@ -14,11 +14,12 @@ import {
   Typography,
 } from "@mui/material";
 import Badge from "@mui/material/Badge";
-import { ShoppingCart, Menu } from "@mui/icons-material";
+import { ShoppingCart, Menu, ExitToApp } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import React, { useContext } from "react";
 import { CartContext } from "../../providers/CartProvider";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 type Props = {
   openCart: () => void;
@@ -38,12 +39,57 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export const NavegationBar = (props: Props) => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const cart = useContext(CartContext);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/auth");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const shoppingCart = (
+    <IconButton
+      onClick={props.openCart}
+      sx={{
+        "&:hover": {
+          backgroundColor: "#FFEBEE",
+          color: "#7B1FA2",
+        },
+      }}
+    >
+      <StyledBadge
+        badgeContent={cart?.cart.length ? cart?.cart.length : 0}
+        color="secondary"
+      >
+        <ShoppingCart></ShoppingCart>
+      </StyledBadge>
+    </IconButton>
+  );
+
+  const signOut = (
+    <IconButton
+      sx={{
+        "&:hover": {
+          backgroundColor: "#FFEBEE",
+          color: "#B71C1C",
+        },
+      }}
+      onClick={() => {
+        handleLogout();
+      }}
+    >
+      <ExitToApp></ExitToApp>
+    </IconButton>
+  );
 
   const drawer = (
     <Box
@@ -71,11 +117,8 @@ export const NavegationBar = (props: Props) => {
             </ListItemButton>
           </ListItem>
         ))}
-        <IconButton aria-label="cart" onClick={props.openCart}>
-          <StyledBadge badgeContent={cart?.cart.length ? cart?.cart.length : 0} color="secondary">
-            <ShoppingCart></ShoppingCart>
-          </StyledBadge>
-        </IconButton>
+        {shoppingCart}
+        {signOut}
       </List>
     </Box>
   );
@@ -136,14 +179,8 @@ export const NavegationBar = (props: Props) => {
                 </Button>
               ))}
 
-              <IconButton aria-label="cart" onClick={props.openCart}>
-                <StyledBadge
-                  badgeContent={cart?.cart.length ? cart?.cart.length : 0}
-                  color="secondary"
-                >
-                  <ShoppingCart></ShoppingCart>
-                </StyledBadge>
-              </IconButton>
+              {shoppingCart}
+              {signOut}
             </Box>
           </Toolbar>
         </AppBar>

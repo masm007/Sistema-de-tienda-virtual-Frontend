@@ -6,14 +6,15 @@ export const loginRequest = async (email: string, password: string) => {
         headers: {
             "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
             Email: email,
             Password: password
         }),
     });
     if (!response.ok) {
-        if(response.status === 401){
-            throw new Error("Credenciales incorrectas"); 
+        if (response.status === 401) {
+            throw new Error("Credenciales incorrectas");
         }
         throw new Error("Error al iniciar sesión");
     }
@@ -29,7 +30,7 @@ export const signUpRequest = async (firstname: string, lastname: string, email: 
         body: JSON.stringify({
             FirstName: firstname,
             LastName: lastname,
-            Email :email,
+            Email: email,
             Password: password,
         }),
     });
@@ -38,3 +39,29 @@ export const signUpRequest = async (firstname: string, lastname: string, email: 
     }
     return response.json();
 }
+
+export const logoutRequest = async (token: string) => {
+    const response = await fetch(`${API_URL}/users/logout`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+    });
+    if (!response.ok) {
+        throw new Error("Error al cerrar sesión");
+    }
+};
+
+export const refreshRequest = async () => {
+    console.log("Llamando a refresh");
+    const response = await fetch(`${API_URL}/users/refresh`, {
+        method: "POST",
+        //envia la cookie
+        credentials: "include",
+    });
+    if (!response.ok) {
+        throw new Error("No se pudo renovar la sesión");
+    }
+    return response.json();
+};
