@@ -6,6 +6,7 @@ export const loginRequest = async (email: string, password: string) => {
         headers: {
             "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
             Email: email,
             Password: password
@@ -39,27 +40,28 @@ export const signUpRequest = async (firstname: string, lastname: string, email: 
     return response.json();
 }
 
-export const logoutRequest = async () => {
-  const token = localStorage.getItem("token");
-  const response = await fetch(`${API_URL}/users/logout`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    credentials: "include",
-  });
-  if (!response.ok) {
-    throw new Error("Error al cerrar sesión");
-  }
+export const logoutRequest = async (token: string) => {
+    const response = await fetch(`${API_URL}/users/logout`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+    });
+    if (!response.ok) {
+        throw new Error("Error al cerrar sesión");
+    }
 };
 
 export const refreshRequest = async () => {
-  const response = await fetch(`${API_URL}/users/refresh`, {
-    method: "POST",
-    credentials: "include",
-  });
-  if (!response.ok) {
-    throw new Error("No se pudo renovar la sesión");
-  }
-  return response.json();
+    console.log("Llamando a refresh");
+    const response = await fetch(`${API_URL}/users/refresh`, {
+        method: "POST",
+        //envia la cookie
+        credentials: "include",
+    });
+    if (!response.ok) {
+        throw new Error("No se pudo renovar la sesión");
+    }
+    return response.json();
 };

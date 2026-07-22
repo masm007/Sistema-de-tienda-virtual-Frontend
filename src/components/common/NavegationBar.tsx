@@ -19,8 +19,7 @@ import { styled } from "@mui/material/styles";
 import React, { useContext } from "react";
 import { CartContext } from "../../providers/CartProvider";
 import { useNavigate } from "react-router-dom";
-import { logoutRequest } from "../../services/AuthService";
-import { STORAGE_KEYS } from "../../constants/storage";
+import { useAuth } from "../../hooks/useAuth";
 
 type Props = {
   openCart: () => void;
@@ -40,6 +39,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export const NavegationBar = (props: Props) => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const cart = useContext(CartContext);
 
@@ -49,9 +49,8 @@ export const NavegationBar = (props: Props) => {
 
   const handleLogout = async () => {
     try {
-      await logoutRequest();
-      localStorage.removeItem(STORAGE_KEYS.TOKEN);
-      navigate("/login");
+      await logout();
+      navigate("/auth");
     } catch (error) {
       console.error(error);
     }

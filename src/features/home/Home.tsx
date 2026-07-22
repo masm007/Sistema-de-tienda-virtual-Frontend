@@ -1,10 +1,10 @@
-import { ProductCard } from "../features/products/ProductCard.tsx";
+import { ProductCard } from "../products/ProductCard.tsx";
 import { Box } from "@mui/material";
 import { useState, useEffect } from "react";
-import { getProductsRequest } from "../services/ProductService.ts";
-import { getCategoriesRequest } from "../services/CategoryService.ts";
-import type { Product } from "../types/Product.ts";
-import type { Category } from "../types/Category.ts";
+import { getProductsRequest } from "../../services/ProductService.ts";
+import { getCategoriesRequest } from "../../services/CategoryService.ts";
+import type { Product } from "../../types/Product.ts";
+import type { Category } from "../../types/Category.ts";
 
 type Props = {};
 

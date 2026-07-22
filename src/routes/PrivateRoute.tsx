@@ -1,10 +1,27 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { Box, CircularProgress } from "@mui/material";
 
 type Props = {};
 
 export const PrivateRoute = (props: Props) => {
-  const token = localStorage.getItem("token");
+  const { isAuthenticated, loading } = useAuth();
 
-  return token ? <Outlet /> : <Navigate to="/auth" />;
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/auth" />;
 };
