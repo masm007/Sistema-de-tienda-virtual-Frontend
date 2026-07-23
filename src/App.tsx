@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./routes/PrivateRoute";
 import { CartProvider } from "./providers/CartProvider.tsx";
 import { Cart } from "./features/cart/Cart.tsx";
+import { Order } from "./features/orders/Order.tsx";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             }
           >
             <Route path="cart" element={<Cart />} />
+            <Route path="orders" element={<Order />} />
           </Route>
         </Route>
         
