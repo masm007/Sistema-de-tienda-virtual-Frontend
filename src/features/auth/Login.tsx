@@ -8,9 +8,8 @@ import IconButton from "@mui/material/IconButton";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Box, Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import logo from "../../assets/images/tiendaVirtual.png";
+import logo from "../../assets/images/Store.png";
 import { useNavigate } from "react-router-dom";
-import { loginRequest } from "../../services/AuthService.ts";
 import "../../assets/styles/MainStyle.css";
 import { useAuth } from "../../hooks/useAuth.ts";
 
@@ -23,7 +22,7 @@ type Props = {};
 
 export const Login = (props: Props) => {
   const navigate = useNavigate();
-  const { login, loading} = useAuth();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -43,8 +42,8 @@ export const Login = (props: Props) => {
       await login(Email, Password);
       // redirigir
       navigate("/");
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      // El AuthProvider maneja el error.
     }
   };
 
@@ -52,18 +51,35 @@ export const Login = (props: Props) => {
     <Box
       className="container"
       sx={{
-        width: "100%",
+        width: "78%",
         maxWidth: {
           xs: "300px",
           sm: "350px",
           md: "400px",
         },
         mx: "auto",
+        backgroundColor: "white",
+        //backgroundColor: "linear-gradient(to bottom, #7EBA98 15%, white 60%)",
+        borderRadius: "20px",
+        border: "1px solid rgba(0,0,0,0.08)",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+        padding: {
+          xs: 2,
+          sm: 4,
+        },
       }}
     >
-      <Box className="authElement">
-        <img width={"250px"} height={"125px"} src={logo} alt="" />
-      </Box>
+      <Box
+        component="img"
+        src={logo}
+        alt="Logo"
+        sx={{
+          width: 250,
+          height: 125,
+          borderRadius: 3,
+          boxShadow: 4,
+        }}
+      />
       <Typography
         className="authElement"
         sx={{
