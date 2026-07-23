@@ -6,6 +6,7 @@ import {
   refreshRequest,
 } from "../services/AuthService";
 import type { User } from "../types/User";
+import { useNotification } from "../hooks/useNotification";
 
 type AuthContextType = {
   user: User | null;
@@ -24,6 +25,7 @@ type Props = {
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: Props) => {
+  const { success, error, warning } = useNotification();
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -52,8 +54,14 @@ export const AuthProvider = ({ children }: Props) => {
     try {
       const user = await loginRequest(email, password);
       authenticate(user);
-    } catch (error) {
-      console.log(error);
+      success("Inicio de sesión exitoso", "Inicio de sesión");
+    } catch (err) {
+      if (err instanceof Error) {
+        error(err.message, "Inicio de sesión");
+      } else {
+        error("Ocurrió un error inesperado", "Inicio de sesión");
+      }
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -64,9 +72,15 @@ export const AuthProvider = ({ children }: Props) => {
     try {
       if (token) {
         await logoutRequest(token);
+        success("El cierre de sesión ha sido exitoso", "Cierre de sesión");
       }
-    } catch (error) {
-      console.log("Ocurrio un error al cerrar sesion");
+    } catch (err) {
+      if (err instanceof Error) {
+        warning(
+          "La sesión local se cerró, pero no se pudo notificar al servidor.",
+          "Cerrar sesión",
+        );
+      }
     } finally {
       clear();
       setLoading(false);
@@ -78,8 +92,7 @@ export const AuthProvider = ({ children }: Props) => {
     try {
       const user = await refreshRequest();
       authenticate(user);
-    } catch (error) {
-      console.log("Ocurrio un error al refrescar la sesion");
+    } catch (err) {
       clear();
     } finally {
       setLoading(false);

@@ -35,7 +35,10 @@ export const signUpRequest = async (firstname: string, lastname: string, email: 
         }),
     });
     if (!response.ok) {
-        throw new Error("Error al registrar el cliente");
+        if (response.status === 400) {
+            throw new Error("El correo ya está registrado.");
+        }
+        throw new Error("No se pudo crear la cuenta.");
     }
     return response.json();
 }
@@ -54,7 +57,6 @@ export const logoutRequest = async (token: string) => {
 };
 
 export const refreshRequest = async () => {
-    console.log("Llamando a refresh");
     const response = await fetch(`${API_URL}/users/refresh`, {
         method: "POST",
         //envia la cookie

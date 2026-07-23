@@ -44,17 +44,34 @@ export const CartProvider = ({ children }: Props) => {
   }, [cart]);
 
   const addToCart = (product: Product, quantity: number) => {
+    if (quantity <= 0) {
+      throw new Error("La cantidad debe ser mayor que cero.");
+    }
+    if (quantity > product.quantity) {
+      throw new Error(
+        `Solo hay ${product.quantity} unidades disponibles de este producto.`,
+      );
+    }
     setCart((currentCart) => {
       const existingItem = currentCart.find(
         (item) => item.product.id === product.id,
       );
       if (existingItem) {
+        const newQuantity = existingItem.quantity + quantity;
+
+        if (newQuantity > product.quantity) {
+          throw new Error(
+            `Solo hay ${product.quantity} unidades disponibles de este producto.`,
+          );
+        }
+
         return currentCart.map((item) =>
           item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, quantity: newQuantity }
             : item,
         );
       }
+
       return [...currentCart, { product, quantity }];
     });
   };
@@ -74,20 +91,20 @@ export const CartProvider = ({ children }: Props) => {
   };
 
   const changeQuantity = (id: number, quantity: number) => {
-    const existingItem = cart.find((item)=> item.product.id === id);
-    if(!existingItem){
+    const existingItem = cart.find((item) => item.product.id === id);
+    if (!existingItem) {
       return;
     }
-    if(quantity <= 0){
+    if (quantity <= 0) {
       deleteProduct(id);
       return;
     }
-    if(quantity > existingItem.product.quantity){
+    if (quantity > existingItem.product.quantity) {
       return;
     }
     setCart((currentCart) =>
       currentCart.map((item) =>
-        item.product.id === id ? { ...item, quantity} : item,
+        item.product.id === id ? { ...item, quantity } : item,
       ),
     );
   };
