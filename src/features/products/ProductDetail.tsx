@@ -7,15 +7,17 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useCart } from "../../hooks/useCart";
 import { Favorite, ShoppingCart, WhatsApp } from "@mui/icons-material";
+import { useNotification } from "../../hooks/useNotification";
 
 type Props = {};
 
 export const ProductDetail = (props: Props) => {
   const { id } = useParams();
-  const { cart, addToCart } = useCart();
+  const { addToCart } = useCart();
   const [product, setProduct] = useState<Product>();
   const [value, setValue] = React.useState("one");
   const [quantity, setQuantity] = useState("");
+  const { error, success } = useNotification();
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -136,29 +138,24 @@ export const ProductDetail = (props: Props) => {
                         },
                       }}
                       onClick={() => {
-                        const value = quantity.trim();
-                        if (!value) {
-                          console.log("No hay ningun valor");
-                          return;
-                        }
-                        if (!value) {
-                          console.log("No hay ningún valor");
-                          return;
-                        }
-                        const amount = Number(value);
+                        const amount = Number(quantity.trim());
                         if (Number.isNaN(amount)) {
-                          console.log("Debe ingresar un número");
+                          error(
+                            "Debe ingresar una cantidad válida.",
+                            "Carrito",
+                          );
                           return;
                         }
-                        if (amount <= 0) {
-                          console.log("La cantidad debe ser mayor que 0");
-                          return;
+                        try {
+                          addToCart(product, amount);
+                          success("Producto agregado al carrito.", "Carrito");
+                        } catch (err) {
+                          if (err instanceof Error) {
+                            error(err.message, "Carrito");
+                          } else {
+                            error("Ocurrió un error inesperado.", "Carrito");
+                          }
                         }
-                        if (amount > product.quantity) {
-                          console.log("Intentó agregar una cantidad no válida");
-                          return;
-                        }
-                        addToCart(product, Number(quantity));
                       }}
                       variant="contained"
                       endIcon={<ShoppingCart />}

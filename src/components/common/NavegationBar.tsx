@@ -20,6 +20,7 @@ import React, { useContext } from "react";
 import { CartContext } from "../../providers/CartProvider";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import logo from "../../assets/images/Store.png";
 
 type Props = {
   openCart: () => void;
@@ -48,12 +49,8 @@ export const NavegationBar = (props: Props) => {
   };
 
   const handleLogout = async () => {
-    try {
-      await logout();
-      navigate("/auth");
-    } catch (error) {
-      console.error(error);
-    }
+    await logout();
+    navigate("/auth");
   };
 
   const shoppingCart = (
@@ -96,16 +93,20 @@ export const NavegationBar = (props: Props) => {
       onClick={handleDrawerToggle}
       sx={{ textAlign: "center", backgroundColor: "#78bf9e", boxShadow: 3 }}
     >
-      <Typography
-        variant="h6"
+      <Box
+        component="img"
+        src={logo}
+        alt="Logo"
         sx={{
+          width: "75px",
+          height: "auto",
           my: 2,
           cursor: "pointer",
+          borderRadius: 3,
+          boxShadow: 4,
         }}
         onClick={() => navigate("/")}
-      >
-        Logo de la empresa
-      </Typography>
+      />
 
       <Divider />
 
@@ -149,38 +150,45 @@ export const NavegationBar = (props: Props) => {
               <Menu></Menu>
             </IconButton>
 
-            <Typography
-              variant="h6"
-              onClick={() => navigate("/")}
-              sx={{
-                color: "black",
-                flexGrow: 1,
-                cursor: "pointer",
-                display: {
-                  xs: "none",
-                  sm: "block",
-                },
-              }}
-            >
-              Logo de la empresa
-            </Typography>
+            <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+              <Box
+                component="img"
+                src={logo}
+                alt="Logo"
+                sx={{
+                  width: "75px",
+                  height: "auto",
+                  my: 2,
+                  cursor: "pointer",
+                  borderRadius: 3,
+                  boxShadow: 4,
+                }}
+                onClick={() => navigate("/")}
+              />
+            </Box>
 
             <Box
-              sx={{
-                display: {
-                  xs: "none",
-                  sm: "block",
-                },
-              }}
+              sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}
             >
-              {navItems.map((item) => (
-                <Button key={item} sx={{ color: "black" }}>
-                  {item}
-                </Button>
-              ))}
+              <Box
+                sx={{
+                  display: {
+                    xs: "none",
+                    sm: "flex",
+                  },
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                {navItems.map((item) => (
+                  <Button key={item} sx={{ color: "black" }}>
+                    {item}
+                  </Button>
+                ))}
 
-              {shoppingCart}
-              {signOut}
+                {shoppingCart}
+                {signOut}
+              </Box>
             </Box>
           </Toolbar>
         </AppBar>
