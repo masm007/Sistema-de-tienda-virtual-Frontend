@@ -11,7 +11,6 @@ import {
   ListItemButton,
   ListItemText,
   Toolbar,
-  Typography,
 } from "@mui/material";
 import Badge from "@mui/material/Badge";
 import { ShoppingCart, Menu, ExitToApp } from "@mui/icons-material";

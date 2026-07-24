@@ -1,75 +1,187 @@
-# React + TypeScript + Vite
+# Masm Store - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend de **Masm Store**, una tienda virtual desarrollada con **React**, **TypeScript** y **Vite**. Esta aplicación consume una API REST desarrollada en ASP.NET Core y permite a los usuarios explorar productos, gestionar un carrito de compras y realizar pedidos simulados.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Autenticación mediante JWT.
+- Renovación automática de sesión mediante Refresh Token.
+- Gestión de usuarios.
+- Visualización de productos y categorías.
+- Carrito de compras.
+- Simulación de proceso de compra.
+- Visualización del detalle de una orden.
+- Notificaciones mediante Snackbar.
+- Diseño responsive para dispositivos móviles y escritorio.
 
-## React Compiler
+---
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Tecnologías utilizadas
 
-Note: This will impact Vite dev & build performances.
+- React
+- TypeScript
+- Vite
+- Material UI
+- React Router DOM
+- Context API
+- Fetch API
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Requisitos
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js 20 o superior
+- npm
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Instalación
+
+Clonar el repositorio:
+
+```bash
+git clone https://github.com/tu-usuario/masm-store-client.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Ingresar al proyecto:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd masm-store-client
 ```
+
+Instalar dependencias:
+
+```bash
+npm install
+```
+
+---
+
+## Variables de entorno
+
+Crear un archivo `.env` en la raíz del proyecto.
+
+Ejemplo:
+
+```env
+VITE_API_URL=https://localhost:7201/api
+```
+
+---
+
+## Ejecutar en desarrollo
+
+```bash
+npm run dev
+```
+
+La aplicación estará disponible en:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Compilar para producción
+
+```bash
+npm run build
+```
+
+---
+
+## Vista previa del build
+
+```bash
+npm run preview
+```
+
+---
+
+## Estructura del proyecto
+
+```
+src/
+│
+├── assets/            # Imágenes e íconos
+├── components/        # Componentes reutilizables
+├── constants/         # Constantes de la aplicación
+├── hooks/             # Hooks personalizados
+├── pages/             # Páginas principales
+├── providers/         # Context Providers
+├── routes/            # Configuración de rutas
+├── services/          # Consumo de la API
+├── styles/            # Archivos CSS
+├── types/             # Interfaces y tipos
+└── utils/             # Funciones auxiliares
+```
+
+---
+
+## Funcionalidades principales
+
+### Autenticación
+
+- Inicio de sesión.
+- Registro de usuarios.
+- Cierre de sesión.
+- Refresh Token mediante cookies HttpOnly.
+- Protección de rutas.
+
+### Productos
+
+- Listado de productos.
+- Visualización de detalles.
+- Consulta de categorías.
+- Estado de disponibilidad.
+
+### Carrito
+
+- Agregar productos.
+- Modificar cantidades.
+- Eliminar productos.
+- Cálculo automático del subtotal.
+
+### Órdenes
+
+- Confirmación de compra.
+- Simulación de creación de una orden.
+- Visualización del resumen de la compra.
+
+### Notificaciones
+
+La aplicación utiliza un `NotificationProvider` para mostrar mensajes de éxito, advertencia, información y error mediante componentes `Snackbar` y `Alert` de Material UI.
+
+---
+
+## Backend
+
+Este proyecto consume la API REST desarrollada en:
+
+```
+https://localhost:7201/api
+```
+
+El backend se encuentra desarrollado con:
+
+- ASP.NET Core
+- Entity Framework Core
+- MySQL
+- JWT Authentication
+- Refresh Tokens
+- Cloudinary
+
+---
+
+## Estado del proyecto
+
+Proyecto en desarrollo.
+
+Actualmente se encuentran implementadas las funcionalidades principales de autenticación, catálogo de productos, carrito de compras y simulación del proceso de compra. Se continúa trabajando en el módulo de órdenes y mejoras generales de la experiencia de usuario.
+
+---
+
+## Autor
+
+Marco Salazar
