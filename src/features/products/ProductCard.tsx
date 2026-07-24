@@ -1,4 +1,4 @@
-import { Button, Typography, Box, IconButton, Alert, Snackbar } from "@mui/material";
+import { Button, Typography, Box } from "@mui/material";
 import foto from "../../assets/images/tiendaVirtual.png";
 import { InformationChip } from "../../components/ui/InformationChip";
 import { ShoppingCart, More } from "@mui/icons-material";
