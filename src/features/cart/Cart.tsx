@@ -49,7 +49,7 @@ export const Cart = (props: Props) => {
         `Se creó la orden con el número: ${ord.orderNumber}`,
         "Crear una orden",
       );
-      navigate("/orders");
+      navigate(`/orders/${ord.orderNumber}`);
     } catch (err) {
       if (err instanceof Error) {
         error(err.message, "Crear una orden");
