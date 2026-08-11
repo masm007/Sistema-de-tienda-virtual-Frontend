@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Footer } from "../components/common/Footer";
-import { NavegationBar } from "../components/common/NavegationBar";
+import { Footer } from "../assets/components/common/Footer";
+import { NavegationBar } from "../assets/components/common/NavegationBar";
 import { CartModal } from "../features/cart/CartModal";
 import "../assets/styles/MainStyle.css";
 

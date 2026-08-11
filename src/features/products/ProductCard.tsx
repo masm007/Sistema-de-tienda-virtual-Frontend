@@ -1,6 +1,6 @@
 import { Button, Typography, Box } from "@mui/material";
 import foto from "../../assets/images/tiendaVirtual.png";
-import { InformationChip } from "../../components/ui/InformationChip";
+import { InformationChip } from "../../assets/components/ui/InformationChip";
 import { ShoppingCart, More } from "@mui/icons-material";
 import type { Product } from "../../types/Product";
 import type { Category } from "../../types/Category";
