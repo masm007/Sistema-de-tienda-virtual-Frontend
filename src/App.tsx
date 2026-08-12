@@ -8,7 +8,10 @@ import { Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./routes/PrivateRoute";
 import { CartProvider } from "./providers/CartProvider.tsx";
 import { Cart } from "./features/cart/Cart.tsx";
-import { Order } from "./features/orders/Order.tsx";
+import { Order } from "./features/orders/user/Order.tsx";
+import { Orders } from "./features/orders/user/Orders.tsx";
+import { AdminOrders } from "./features/orders/admin/AdminOrders.tsx";
+import { AdminOrder } from "./features/orders/admin/AdminOrder.tsx";
 
 function App() {
   return (
@@ -26,7 +29,10 @@ function App() {
             }
           >
             <Route path="cart" element={<Cart />} />
-            <Route path="orders" element={<Order />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="orders/admin" element={<AdminOrders />} />
+            <Route path="orders/admin/:orderNumber" element={<AdminOrder />} />
+            <Route path="orders/:orderNumber" element={<Order />} />
           </Route>
         </Route>
         
