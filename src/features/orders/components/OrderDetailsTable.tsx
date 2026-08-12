@@ -62,20 +62,23 @@ export const OrderDetailsTable = (props: Props) => {
           className="company-header"
           sx={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: { xs: "column-reverse", md: "row" },
             justifyContent: "space-between",
+            gap: 2,
+            padding: 1,
             alignItems: "flex-start",
           }}
         >
           <Box
+            className="company-info"
             sx={{
               display: "flex",
               width: "70%",
               //margin: "auto",
-              flexDirection: "row",
+              flexDirection: { xs: "column", md: "row" },
               justifyContent: "flex-start",
               alignItems: "flex-start",
-              gap: 5,
+              gap: { xs: 2, md: 5 },
             }}
           >
             <Box
@@ -83,23 +86,26 @@ export const OrderDetailsTable = (props: Props) => {
               src={logo}
               alt="Logo"
               sx={{
-                width: "10vw",
+                width: { xs: "120px", md: "10vw" },
                 height: "auto",
-                my: 2,
-                cursor: "pointer",
                 borderRadius: 3,
                 boxShadow: 4,
               }}
             />
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "5px" }}>
               <Typography variant="h3">Masm Store</Typography>
-              <Typography>Dirección: Avenida Siempreviva 742</Typography>
-              <Typography>Teléfono: 0987654321</Typography>
-              <Typography>Email: masm.store@example.com</Typography>
-              <Typography>Web: masm.store.com</Typography>
+              <Typography>
+                {createSpan("Dirección")} Avenida Siempreviva 742
+              </Typography>
+              <Typography>{createSpan("Teléfono")} 0987654321</Typography>
+              <Typography>
+                {createSpan("Email")} store.masm.com
+              </Typography>
+              <Typography>{createSpan("Web")} masm.store.com</Typography>
             </Box>
           </Box>
           <Box
+            className="order-info"
             sx={{
               border: "1px solid black",
               borderRadius: "5px",
@@ -116,11 +122,14 @@ export const OrderDetailsTable = (props: Props) => {
           sx={{
             display: "flex",
             flexDirection: "row",
+            gap: 2,
+            padding: 1,
+            flexWrap: "wrap",
             justifyContent: "space-between",
             alignItems: "center",
           }}
         >
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Box sx={{ display: "flex", flexDirection: "column"}}>
             <Typography>
               {createSpan("Cliente")}
               {props.order.user.firstName + " " + props.order.user.lastName}
@@ -156,10 +165,18 @@ export const OrderDetailsTable = (props: Props) => {
             <Table sx={{ minWidth: "auto" }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Nombre</TableCell>
-                  <TableCell>Precio Unitario</TableCell>
-                  <TableCell>Cantidad</TableCell>
-                  <TableCell>Total</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                    Nombre
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                    Precio Unitario
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                    Cantidad
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                    Total
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -168,16 +185,16 @@ export const OrderDetailsTable = (props: Props) => {
                     key={item.product.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
-                    <TableCell component="th" scope="row">
+                    <TableCell component="th" scope="row" align="center">
                       {item.product.name}
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell component="th" scope="row" align="center">
                       {item.unitPrice.toFixed(2)}
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell component="th" scope="row" align="center">
                       {item.quantity}
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    <TableCell component="th" scope="row" align="center">
                       {item.subtotal.toFixed(2)}
                     </TableCell>
                   </TableRow>
@@ -195,18 +212,42 @@ export const OrderDetailsTable = (props: Props) => {
             alignItems: "flex-end",
           }}
         >
-          <Typography>
-            {createSpan("Subtotal")} ${props.order.subtotal.toFixed(2)}
-          </Typography>
-          <Typography>
-            {createSpan("Descuento")} ${props.order.discount.toFixed(2)}
-          </Typography>
-          <Typography>
-            {createSpan("IVA")} ${props.order.iva.toFixed(2)}
-          </Typography>
-          <Typography>
-            {createSpan("Total")} ${props.order.total.toFixed(2)}
-          </Typography>
+          <TableContainer
+            component={Paper}
+            sx={{ maxWidth: { sm: "30vw", md: "20vw" } }}
+          >
+            <Table sx={{ maxWidth: "auto" }} aria-label="order-resume">
+              <TableBody>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: "bold" }}>Subtotal</TableCell>
+                  <TableCell align="right">
+                    ${props.order.subtotal.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell sx={{ fontWeight: "bold" }}>Descuento</TableCell>
+                  <TableCell align="right">
+                    ${props.order.discount.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell sx={{ fontWeight: "bold" }}>IVA</TableCell>
+                  <TableCell align="right">
+                    ${props.order.iva.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell sx={{ fontWeight: "bold" }}>Total</TableCell>
+                  <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                    ${props.order.total.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
       </Box>
     </Box>

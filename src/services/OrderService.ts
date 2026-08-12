@@ -1,6 +1,38 @@
 import type { Order, CreateOrderDto } from "../types/Order";
 const API_URL = import.meta.env.VITE_API_URL;
 
+export const getAllOrdersForAdmin = async (token: string) => {
+    const response = await fetch(`${API_URL}/orders/admin/`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!response.ok) {
+        if (response.status === 404) {
+            throw new Error("Página no encontrada");
+        }
+        throw new Error("Ocurrió un error");
+    }
+    return response.json() as Promise<Order[]>;
+}
+
+export const getOrderByOrderNumberForAdmin = async (orderNumber: string, token: string) => {
+    const response = await fetch(`${API_URL}/orders/admin/${orderNumber}`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!response.ok) {
+        if (response.status === 404) {
+            throw new Error("Página no encontrada");
+        }
+        throw new Error("Ocurrió un error");
+    }
+    return response.json() as Promise<Order>;
+}
+
 export const getOrderByOrderNumberForUser = async (orderNumber: string, token: string) => {
     const response = await fetch(`${API_URL}/orders/${orderNumber}`, {
         method: "GET",
@@ -19,8 +51,8 @@ export const getOrderByOrderNumberForUser = async (orderNumber: string, token: s
     return response.json() as Promise<Order>;
 }
 
-export const getOrderByOrderNumberForAdmin = async (orderNumber: string, token: string) => {
-    const response = await fetch(`${API_URL}/orders/admin/${orderNumber}`, {
+export const getAllOrdersForUser = async (token: string) => {
+    const response = await fetch(`${API_URL}/orders/`, {
         method: "GET",
         headers: {
             Authorization: `Bearer ${token}`,
@@ -32,7 +64,7 @@ export const getOrderByOrderNumberForAdmin = async (orderNumber: string, token: 
         }
         throw new Error("Ocurrió un error");
     }
-    return response.json() as Promise<Order>;
+    return response.json() as Promise<Order[]>;
 }
 
 export const createOrder = async (dto: CreateOrderDto, token: string) => {
