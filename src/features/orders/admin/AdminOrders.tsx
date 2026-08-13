@@ -10,17 +10,22 @@ import {
   TableRow,
 } from "@mui/material";
 import { OrderSummary } from "../components/OrderSummary";
-import type { Order } from "../../../types/Order";
+import type {
+  Order,
+  OrderSummary as OrderSummaryDto,
+} from "../../../types/Order";
 import { useAuth } from "../../../hooks/useAuth";
 import { getAllOrdersForAdmin } from "../../../services/OrderService";
 import { useNotification } from "../../../hooks/useNotification";
+import { UserRole } from "../../../types/User";
 
 type Props = {};
 
 export const AdminOrders = (props: Props) => {
-  const [orders, setOrders] = useState<Order[] | null>(null);
+  const [orders, setOrders] = useState<OrderSummaryDto[] | null>(null);
   const { user, token } = useAuth();
   const { error } = useNotification();
+  const isAdmin = user?.role === UserRole.Admin;
 
   useEffect(() => {
     if (!token) {
@@ -48,6 +53,7 @@ export const AdminOrders = (props: Props) => {
             <TableRow>
               <TableCell>Número de orden</TableCell>
               <TableCell>Fecha</TableCell>
+              <TableCell>Cliente</TableCell>
               <TableCell align="center">Cantidad de productos</TableCell>
               <TableCell align="right">Total</TableCell>
               <TableCell align="center">Estado</TableCell>
@@ -57,7 +63,11 @@ export const AdminOrders = (props: Props) => {
 
           <TableBody>
             {orders?.map((order) => (
-              <OrderSummary key={order.orderNumber} order={order} />
+              <OrderSummary
+                key={order.orderNumber}
+                order={order}
+                isAdmin={isAdmin}
+              />
             ))}
           </TableBody>
         </Table>

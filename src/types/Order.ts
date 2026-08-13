@@ -1,3 +1,4 @@
+import { OrderSummary } from './../features/orders/components/OrderSummary';
 import type { UserDto } from "./User.ts";
 import type { ProductSummaryDto } from "./Product.ts";
 
@@ -9,6 +10,15 @@ export interface Order {
   subtotal: number,
   discount: number,
   iva: number,
+  total: number,
+  state: OrderStatus
+}
+
+export interface OrderSummary {
+  orderNumber: string,
+  emisionDate: string,
+  user: UserDto | null,
+  productsQuantity: number,
   total: number,
   state: OrderStatus
 }

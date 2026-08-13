@@ -21,7 +21,7 @@ type Props = {};
 
 export const Cart = (props: Props) => {
   const { token } = useAuth();
-  const { cart, getSubtotal } = useCart();
+  const { cart, getSubtotal, emptyCart } = useCart();
   const { success, error } = useNotification();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -43,12 +43,14 @@ export const Cart = (props: Props) => {
     };
 
     try {
-      let ord = await createOrder(dto, token);
+      const ord = await createOrder(dto, token);
       setOpen(false);
       success(
         `Se creó la orden con el número: ${ord.orderNumber}`,
         "Crear una orden",
       );
+      //vaciar el carrito
+      emptyCart();
       //para ahorrar consultas al api
       navigate(`/orders/${ord.orderNumber}`, {
         state: { order: ord },

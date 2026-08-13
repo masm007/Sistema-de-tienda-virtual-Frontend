@@ -1,4 +1,4 @@
-import type { Order, CreateOrderDto } from "../types/Order";
+import type { Order, OrderSummary, CreateOrderDto } from "../types/Order";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const getAllOrdersForAdmin = async (token: string) => {
@@ -14,7 +14,7 @@ export const getAllOrdersForAdmin = async (token: string) => {
         }
         throw new Error("Ocurrió un error");
     }
-    return response.json() as Promise<Order[]>;
+    return response.json() as Promise<OrderSummary[]>;
 }
 
 export const getOrderByOrderNumberForAdmin = async (orderNumber: string, token: string) => {
@@ -64,7 +64,7 @@ export const getAllOrdersForUser = async (token: string) => {
         }
         throw new Error("Ocurrió un error");
     }
-    return response.json() as Promise<Order[]>;
+    return response.json() as Promise<OrderSummary[]>;
 }
 
 export const createOrder = async (dto: CreateOrderDto, token: string) => {

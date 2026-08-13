@@ -11,17 +11,22 @@ import {
   Typography,
 } from "@mui/material";
 import { OrderSummary } from "../components/OrderSummary";
-import type { Order } from "../../../types/Order";
+import type {
+  Order,
+  OrderSummary as OrderSummaryDto,
+} from "../../../types/Order";
 import { useAuth } from "../../../hooks/useAuth";
 import { getAllOrdersForUser } from "../../../services/OrderService";
 import { useNotification } from "../../../hooks/useNotification";
+import { UserRole } from "../../../types/User";
 
 type Props = {};
 
 export const Orders = (props: Props) => {
-  const [orders, setOrders] = useState<Order[] | null>(null);
+  const [orders, setOrders] = useState<OrderSummaryDto[] | null>(null);
   const { user, token } = useAuth();
   const { error } = useNotification();
+  const isAdmin = user?.role === UserRole.Admin;
 
   useEffect(() => {
     if (!token) {
@@ -50,12 +55,10 @@ export const Orders = (props: Props) => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        gap: 2
+        gap: 2,
       }}
     >
-      <Typography variant="h4">
-        Mis órdenes
-      </Typography>
+      <Typography variant="h4">Mis órdenes</Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -71,7 +74,7 @@ export const Orders = (props: Props) => {
 
           <TableBody>
             {orders?.map((order) => (
-              <OrderSummary key={order.orderNumber} order={order} />
+              <OrderSummary key={order.orderNumber} order={order} isAdmin={isAdmin}/>
             ))}
           </TableBody>
         </Table>

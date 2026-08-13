@@ -1,9 +1,14 @@
 import { Box, Button, TableCell, TableRow, Typography } from "@mui/material";
-import { OrderStatus, OrderStatusName, type Order as OrderType } from "../../../types/Order";
+import {
+  OrderStatus,
+  OrderStatusName,
+  type OrderSummary as OrderSummaryDto,
+} from "../../../types/Order";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
-  order: OrderType;
+  order: OrderSummaryDto;
+  isAdmin: boolean;
 };
 
 export const OrderSummary = (props: Props) => {
@@ -27,22 +32,20 @@ export const OrderSummary = (props: Props) => {
       }}
     >
       <TableCell>
-        <Typography fontWeight={600}>
-          {props.order.orderNumber}
-        </Typography>
+        <Typography fontWeight={600}>{props.order.orderNumber}</Typography>
       </TableCell>
 
-      <TableCell>
-        {formattedDateOrder}
-      </TableCell>
+      <TableCell>{formattedDateOrder}</TableCell>
 
-      <TableCell align="center">
-        {props.order.orderDetails.length}
-      </TableCell>
+      {props.isAdmin && props.order.user && (
+        <TableCell>
+          {props.order.user.firstName} {props.order.user.lastName}
+        </TableCell>
+      )}
 
-      <TableCell align="right">
-        ${props.order.total.toFixed(2)}
-      </TableCell>
+      <TableCell align="center">{props.order.productsQuantity}</TableCell>
+
+      <TableCell align="right">${props.order.total.toFixed(2)}</TableCell>
 
       <TableCell align="center">
         <Typography
@@ -52,13 +55,11 @@ export const OrderSummary = (props: Props) => {
             padding: "4px 10px",
             borderRadius: 2,
             backgroundColor:
-              props.order.state === OrderStatus.Pending
-                ? "#FFF3CD"
-                : "#E8F5E9",
+              props.order.state === OrderStatus.Pending ? "#FFF3CD" : "#E8F5E9",
             fontSize: "0.85rem",
           }}
         >
-            {OrderStatusName[props.order.state]}
+          {OrderStatusName[props.order.state]}
         </Typography>
       </TableCell>
 
@@ -76,24 +77,18 @@ export const OrderSummary = (props: Props) => {
             size="small"
             variant="contained"
             color="info"
-            onClick={()=>{navigate(`/orders/${props.order.orderNumber}`)}}
+            onClick={() => {
+              navigate(`/orders/${props.order.orderNumber}`);
+            }}
           >
             Ver
           </Button>
 
-          <Button
-            size="small"
-            variant="contained"
-            color="warning"
-          >
+          <Button size="small" variant="contained" color="warning">
             Cambiar estado
           </Button>
 
-          <Button
-            size="small"
-            variant="contained"
-            color="error"
-          >
+          <Button size="small" variant="contained" color="error">
             Eliminar
           </Button>
         </Box>
