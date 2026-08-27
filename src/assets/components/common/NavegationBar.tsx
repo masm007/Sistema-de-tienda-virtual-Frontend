@@ -11,16 +11,15 @@ import {
   ListItemButton,
   ListItemText,
   Toolbar,
-  Typography,
 } from "@mui/material";
 import Badge from "@mui/material/Badge";
 import { ShoppingCart, Menu, ExitToApp } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import React, { useContext } from "react";
-import { CartContext } from "../../providers/CartProvider";
+import { CartContext } from "../../../providers/CartProvider";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import logo from "../../assets/images/Store.png";
+import { useAuth } from "../../../hooks/useAuth";
+import logo from "../../images/Store.png";
 
 type Props = {
   openCart: () => void;

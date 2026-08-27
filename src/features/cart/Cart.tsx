@@ -12,13 +12,52 @@ import {
 import { useCart } from "../../hooks/useCart";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { createOrder } from "../../services/OrderService";
+import type { CreateOrderDto } from "../../types/Order";
+import { useAuth } from "../../hooks/useAuth";
+import { useNotification } from "../../hooks/useNotification";
 
 type Props = {};
 
 export const Cart = (props: Props) => {
+  const { token } = useAuth();
   const { cart, getSubtotal } = useCart();
+  const { success, error } = useNotification();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
+  const handleCreateOrder = async () => {
+    if (!token) {
+      error(
+        "Debes iniciar sesión para realizar una compra.",
+        "Crear una orden",
+      );
+      return;
+    }
+
+    const dto: CreateOrderDto = {
+      details: cart.map((item) => ({
+        productId: item.product.id,
+        quantity: item.quantity,
+      })),
+    };
+
+    try {
+      let ord = await createOrder(dto, token);
+      setOpen(false);
+      success(
+        `Se creó la orden con el número: ${ord.orderNumber}`,
+        "Crear una orden",
+      );
+      navigate(`/orders/${ord.orderNumber}`);
+    } catch (err) {
+      if (err instanceof Error) {
+        error(err.message, "Crear una orden");
+      } else {
+        error("Ocurrió un error inesperado.", "Crear una orden");
+      }
+    }
+  };
 
   return (
     <>
@@ -73,13 +112,7 @@ export const Cart = (props: Props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancelar</Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              setOpen(false);
-              navigate("/orders");
-            }}
-          >
+          <Button variant="contained" onClick={handleCreateOrder}>
             Confirmar
           </Button>
         </DialogActions>

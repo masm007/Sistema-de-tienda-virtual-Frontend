@@ -2,7 +2,7 @@ import React from "react";
 import IconButton from "@mui/material/IconButton";
 import { Typography } from "@mui/material";
 import { LinkedIn, GitHub, Email, WhatsApp, Phone } from "@mui/icons-material";
-import "../../assets/styles/MainStyle.css";
+import "../../styles/MainStyle.css";
 
 type Props = {};
 

@@ -1,5 +1,5 @@
 import { ProductCard } from "../products/ProductCard.tsx";
-import { Box } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { getProductsRequest } from "../../services/ProductService.ts";
 import { getCategoriesRequest } from "../../services/CategoryService.ts";
@@ -11,32 +11,83 @@ type Props = {};
 export const Home = (props: Props) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    const loadProducts = async () => {
-      const productsData = await getProductsRequest();
-      setProducts(productsData);
+    const loadData = async () => {
+      try {
+        const [productsData, categoriesData] = await Promise.all([
+          getProductsRequest(),
+          getCategoriesRequest(),
+        ]);
+        setProducts(productsData);
+        setCategories(categoriesData);
+      } catch {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     };
-    const loadCategories = async () => {
-      const categoriesData = await getCategoriesRequest();
-      setCategories(categoriesData);
-    };
-    loadProducts();
-    loadCategories();
+    loadData();
   }, []);
 
-  return (
-    <div>
-      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-        {products.map((prd) => (
-          <ProductCard
-            key={prd.id}
-            product={prd}
-            categories={categories}
-          ></ProductCard>
-        ))}
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          minHeight: "80vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
       </Box>
-      {/* Poner las categorias con paginacion estilo mercado libre*/}
-    </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        sx={{
+          minHeight: "80vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          px: 2,
+        }}
+      >
+        <Typography color="error">
+          No se pudo conectar con el servidor.
+        </Typography>
+      </Box>
+    );
+  }
+
+  if (products.length === 0) {
+    return (
+      <Box
+        sx={{
+          minHeight: "80vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          px: 2,
+        }}
+      >
+        <Typography>No hay productos disponibles.</Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+      {products.map((prd) => (
+        <ProductCard key={prd.id} product={prd} categories={categories} />
+      ))}
+    </Box>
   );
 };

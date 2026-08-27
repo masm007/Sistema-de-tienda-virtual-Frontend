@@ -1,4 +1,4 @@
-export interface Product{
+export interface Product {
   id: number,
   name: string,
   description: string,
@@ -11,6 +11,12 @@ export interface Product{
   images: ProductImage[]
 }
 
-export interface ProductImage{
+export interface ProductSummaryDto {
+  id: number,
+  name: string
+}
+
+
+export interface ProductImage {
   url: string,
 }
