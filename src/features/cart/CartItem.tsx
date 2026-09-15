@@ -16,8 +16,9 @@ export const CartItem = (props: Props) => {
     <Box
       className="CartItemContainer"
       sx={{
+        borderRadius: "10px",
         display: "flex",
-        padding: "10px",
+        padding: "15px",
         flexDirection: "column",
         gap: "20px",
         justifyContent: "center",

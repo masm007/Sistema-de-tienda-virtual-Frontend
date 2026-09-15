@@ -26,7 +26,12 @@ type Props = {
 };
 
 const drawerWidth = 240;
-const navItems = ["Productos", "Categorías", "Ofertas", "Contacto"];
+const navItems = [
+  //{ label: "Inicio", path: "/" },
+  { label: "Categorías", path: "/categories" },
+  { label: "Mis Órdenes", path: "/orders" },
+  { label: "Contacto", path: "/contact" },
+];
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -111,9 +116,14 @@ export const NavegationBar = (props: Props) => {
 
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+          <ListItem key={item.path} disablePadding>
+            <ListItemButton
+              onClick={() => {
+                item.path;
+              }}
+              sx={{ textAlign: "center" }}
+            >
+              <ListItemText primary={item.label} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -180,8 +190,14 @@ export const NavegationBar = (props: Props) => {
                 }}
               >
                 {navItems.map((item) => (
-                  <Button key={item} sx={{ color: "black" }}>
-                    {item}
+                  <Button
+                    key={item.path}
+                    onClick={() => {
+                      navigate(item.path);
+                    }}
+                    sx={{ color: "black" }}
+                  >
+                    {item.label}
                   </Button>
                 ))}
 
