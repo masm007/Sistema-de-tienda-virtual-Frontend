@@ -1,11 +1,18 @@
 import type { OrderDetailRequestDto } from "./Order";
 import type { ProductSummaryDto } from "./Product";
 
+// Equivalente al enum de C# (Domain.Enum.DiscountType). No hay conversor a
+// string configurado en el backend, así que viaja como número.
 export const DiscountType = {
-  Percentage: "Percentage",
-  Fixed: "Fixed",
+  Percentage: 0,
+  FixedAmount: 1,
 } as const;
 export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType];
+
+export const DiscountTypeName: Record<DiscountType, string> = {
+  [DiscountType.Percentage]: "Porcentaje",
+  [DiscountType.FixedAmount]: "Monto fijo",
+};
 
 export interface CouponDto {
   id: number;

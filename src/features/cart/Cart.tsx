@@ -76,7 +76,7 @@ export const Cart = (props: Props) => {
       const dto: ValidateCouponRequest = {
         code: coupon,
         details: cart.map((item) => ({
-          productId: item.product.id,
+          productSku: item.product.sku,
           quantity: item.quantity,
         })),
       };
@@ -114,9 +114,10 @@ export const Cart = (props: Props) => {
 
     const dto: CreateOrderDto = {
       details: cart.map((item) => ({
-        productId: item.product.id,
+        productSku: item.product.sku,
         quantity: item.quantity,
       })),
+      couponCode: appliedCoupon?.code,
     };
 
     try {

@@ -11,11 +11,20 @@ import {
   ListItemButton,
   ListItemText,
   Toolbar,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import Badge from "@mui/material/Badge";
-import { ShoppingCart, Menu, ExitToApp } from "@mui/icons-material";
+import {
+  ShoppingCart,
+  Menu as MenuIcon,
+  ExitToApp,
+  AdminPanelSettings,
+  AccountCircle,
+  Person,
+} from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { CartContext } from "../../../providers/CartProvider";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
@@ -23,6 +32,9 @@ import logo from "../../images/Store.png";
 
 type Props = {
   openCart: () => void;
+  // "admin" oculta el carrito y la navegación de cliente, ya que el panel
+  // admin no tiene CartProvider y esas acciones no aplican ahí.
+  variant?: "public" | "admin";
 };
 
 const drawerWidth = 240;
@@ -44,18 +56,65 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export const NavegationBar = (props: Props) => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const cart = useContext(CartContext);
+
+  const isAdmin = user?.role === 1;
+  const isAdminView = props.variant === "admin";
+  const menuOpen = Boolean(anchorEl);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
+  const handleAccountClick = (e: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleAccountClose = () => setAnchorEl(null);
+
   const handleLogout = async () => {
     await logout();
     navigate("/auth");
   };
+
+  const accountMenu = (
+    <>
+      <IconButton
+        onClick={handleAccountClick}
+        sx={{ "&:hover": { backgroundColor: "#FFEBEE", color: "#7B1FA2" } }}
+      >
+        <AccountCircle />
+      </IconButton>
+      <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleAccountClose}>
+        <MenuItem
+          onClick={() => {
+            handleAccountClose();
+            navigate("/profile");
+          }}
+        >
+          <Person sx={{ mr: 1 }} fontSize="small" />
+          Mi perfil
+        </MenuItem>
+        {isAdmin && !isAdminView && (
+          <MenuItem
+            onClick={() => {
+              handleAccountClose();
+              navigate("/admin");
+            }}
+          >
+            <AdminPanelSettings sx={{ mr: 1 }} fontSize="small" />
+            Panel de administración
+          </MenuItem>
+        )}
+        <MenuItem onClick={handleLogout}>
+          <ExitToApp sx={{ mr: 1 }} fontSize="small" />
+          Cerrar sesión
+        </MenuItem>
+      </Menu>
+    </>
+  );
 
   const shoppingCart = (
     <IconButton
@@ -97,38 +156,44 @@ export const NavegationBar = (props: Props) => {
       onClick={handleDrawerToggle}
       sx={{ textAlign: "center", backgroundColor: "#78bf9e", boxShadow: 3 }}
     >
-      <Box
-        component="img"
-        src={logo}
-        alt="Logo"
-        sx={{
-          width: "75px",
-          height: "auto",
-          my: 2,
-          cursor: "pointer",
-          borderRadius: 3,
-          boxShadow: 4,
-        }}
-        onClick={() => navigate("/")}
-      />
-
+      {/* ...logo igual... */}
       <Divider />
-
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item.path} disablePadding>
+        {!isAdminView &&
+          navItems.map((item) => (
+            <ListItem key={item.path} disablePadding>
+              <ListItemButton
+                onClick={() => navigate(item.path)}
+                sx={{ textAlign: "center" }}
+              >
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => navigate("/profile")}
+            sx={{ textAlign: "center" }}
+          >
+            <ListItemText primary="Mi perfil" />
+          </ListItemButton>
+        </ListItem>
+        {isAdmin && !isAdminView && (
+          <ListItem disablePadding>
             <ListItemButton
-              onClick={() => {
-                item.path;
-              }}
+              onClick={() => navigate("/admin")}
               sx={{ textAlign: "center" }}
             >
-              <ListItemText primary={item.label} />
+              <ListItemText primary="Panel de administración" />
             </ListItemButton>
           </ListItem>
-        ))}
-        {shoppingCart}
-        {signOut}
+        )}
+        {!isAdminView && shoppingCart}
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleLogout} sx={{ textAlign: "center" }}>
+            <ListItemText primary="Cerrar sesión" />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
@@ -137,90 +202,69 @@ export const NavegationBar = (props: Props) => {
     <>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-
         <AppBar
           component="nav"
-          sx={{
-            backgroundColor: "#78bf9e",
-            boxShadow: 3,
-          }}
+          sx={{ backgroundColor: "#78bf9e", boxShadow: 3 }}
         >
           <Toolbar>
             <IconButton
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{
-                color: "black",
-                mr: 2,
-                display: { sm: "none" },
-              }}
+              sx={{ color: "black", mr: 2, display: { sm: "none" } }}
             >
-              <Menu></Menu>
+              <MenuIcon />
             </IconButton>
 
-            <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-              <Box
-                component="img"
-                src={logo}
-                alt="Logo"
-                sx={{
-                  width: "75px",
-                  height: "auto",
-                  my: 2,
-                  cursor: "pointer",
-                  borderRadius: 3,
-                  boxShadow: 4,
-                }}
-                onClick={() => navigate("/")}
-              />
-            </Box>
+            <Box
+              component="img"
+              src={logo}
+              alt="Logo"
+              sx={{
+                width: "75px",
+                height: "auto",
+                my: 2,
+                cursor: "pointer",
+                borderRadius: 3,
+                boxShadow: 4,
+              }}
+              onClick={() => navigate("/")}
+            />
 
             <Box
               sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}
             >
               <Box
                 sx={{
-                  display: {
-                    xs: "none",
-                    sm: "flex",
-                  },
+                  display: { xs: "none", sm: "flex" },
                   alignItems: "center",
                   gap: 1,
                 }}
               >
-                {navItems.map((item) => (
-                  <Button
-                    key={item.path}
-                    onClick={() => {
-                      navigate(item.path);
-                    }}
-                    sx={{ color: "black" }}
-                  >
-                    {item.label}
-                  </Button>
-                ))}
-
-                {shoppingCart}
-                {signOut}
+                {!isAdminView &&
+                  navItems.map((item) => (
+                    <Button
+                      key={item.path}
+                      onClick={() => navigate(item.path)}
+                      sx={{ color: "black" }}
+                    >
+                      {item.label}
+                    </Button>
+                  ))}
+                {!isAdminView && shoppingCart}
+                {accountMenu}
               </Box>
             </Box>
           </Toolbar>
         </AppBar>
 
-        {/* movil */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
+          ModalProps={{ keepMounted: true }}
           sx={{
-            display: {
-              xs: "block",
-              sm: "none",
-            },
+            display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,

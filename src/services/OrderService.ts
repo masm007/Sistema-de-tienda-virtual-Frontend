@@ -1,4 +1,4 @@
-import type { Order, OrderSummary, CreateOrderDto } from "../types/Order";
+import type { Order, OrderSummary, CreateOrderDto, OrderStatus } from "../types/Order";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const getAllOrdersForAdmin = async (token: string) => {
@@ -88,3 +88,35 @@ export const createOrder = async (dto: CreateOrderDto, token: string) => {
     }
     return response.json() as Promise<Order>;
 }
+
+export const updateOrderStatusRequest = async (
+  orderNumber: string,
+  state: OrderStatus,
+  token: string,
+) => {
+  const response = await fetch(`${API_URL}/orders/admin/${orderNumber}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ state }),
+  });
+  if (!response.ok) {
+    const data = await response.json().catch(() => null);
+    throw new Error(data?.error ?? "No se pudo actualizar el estado de la orden.");
+  }
+};
+
+export const cancelOrderRequest = async (orderNumber: string, token: string) => {
+  const response = await fetch(`${API_URL}/orders/admin/${orderNumber}/cancel`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    const data = await response.json().catch(() => null);
+    throw new Error(data?.error ?? "No se pudo cancelar la orden.");
+  }
+};
