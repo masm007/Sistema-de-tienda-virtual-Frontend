@@ -58,7 +58,7 @@ export const Orders = (props: Props) => {
         gap: 2,
       }}
     >
-      <Typography variant="h4">Mis órdenes</Typography>
+      <Typography variant="h1">Mis órdenes</Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

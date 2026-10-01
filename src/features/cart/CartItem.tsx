@@ -1,11 +1,11 @@
 import { Box, Button, IconButton, Typography } from "@mui/material";
-import type { Product } from "../../types/Product";
+import type { ProductRequest } from "../../types/Product";
 import { useCart } from "../../hooks/useCart";
 import { Preview, RemoveShoppingCart, Add, Remove } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
-  product: Product;
+  product: ProductRequest;
   quantity: number;
 };
 
@@ -92,7 +92,7 @@ export const CartItem = (props: Props) => {
             >
               <IconButton
                 onClick={() => {
-                  changeQuantity(props.product.id, props.quantity - 1);
+                  changeQuantity(props.product.sku, props.quantity - 1);
                 }}
                 disabled={props.quantity <= 1}
               >
@@ -101,7 +101,7 @@ export const CartItem = (props: Props) => {
               <Typography>{props.quantity}</Typography>
               <IconButton
                 onClick={() => {
-                  changeQuantity(props.product.id, props.quantity + 1);
+                  changeQuantity(props.product.sku, props.quantity + 1);
                 }}
                 disabled={props.quantity >= props.product.quantity}
               >
@@ -131,7 +131,7 @@ export const CartItem = (props: Props) => {
           color="info"
           endIcon={<Preview />}
           onClick={() => {
-            navigate(`/products/${props.product.id}`);
+            navigate(`/products/${props.product.sku}`);
           }}
         >
           Ver producto
@@ -141,7 +141,7 @@ export const CartItem = (props: Props) => {
           color="error"
           endIcon={<RemoveShoppingCart />}
           onClick={() => {
-            deleteProduct(props.product.id);
+            deleteProduct(props.product.sku);
           }}
         >
           Quitar

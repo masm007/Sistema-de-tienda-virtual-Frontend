@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import { OrderDetailsTable } from '../components/OrderDetailsTable';
-import { Box, CircularProgress } from '@mui/material';
-import { getOrderByOrderNumberForAdmin } from '../../../services/OrderService';
-import { useNotification } from '../../../hooks/useNotification';
-import { useAuth } from '../../../hooks/useAuth';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { OrderDetailsTable } from "../../orders/components/OrderDetailsTable";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import { getOrderByOrderNumberForAdmin } from "../../../services/OrderService";
+import { useNotification } from "../../../hooks/useNotification";
+import { useAuth } from "../../../hooks/useAuth";
+import { useParams } from "react-router-dom";
 import type { Order as OrderType } from "../../../types/Order";
 
 export const AdminOrder = () => {
@@ -49,6 +49,8 @@ export const AdminOrder = () => {
   }
 
   return (
-    <OrderDetailsTable order={order}></OrderDetailsTable>
+    <Box>
+      <OrderDetailsTable order={order}></OrderDetailsTable>
+    </Box>
   );
-}
+};

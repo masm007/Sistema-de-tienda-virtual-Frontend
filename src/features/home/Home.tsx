@@ -1,28 +1,21 @@
 import { ProductCard } from "../products/ProductCard.tsx";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import { getProductsRequest } from "../../services/ProductService.ts";
-import { getCategoriesRequest } from "../../services/CategoryService.ts";
-import type { Product } from "../../types/Product.ts";
-import type { Category } from "../../types/Category.ts";
+import { getAllActivesProductsRequest } from "../../services/ProductService.ts";
+import type { ProductRequest } from "../../types/Product.ts";
 
 type Props = {};
 
 export const Home = (props: Props) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<ProductRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [productsData, categoriesData] = await Promise.all([
-          getProductsRequest(),
-          getCategoriesRequest(),
-        ]);
+        const productsData = await getAllActivesProductsRequest();
         setProducts(productsData);
-        setCategories(categoriesData);
       } catch {
         setError(true);
       } finally {
@@ -84,9 +77,17 @@ export const Home = (props: Props) => {
   }
 
   return (
-    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "flex-start",
+        alignContent: "flex-start",
+        minHeight: "85vh",
+      }}
+    >
       {products.map((prd) => (
-        <ProductCard key={prd.id} product={prd} categories={categories} />
+        <ProductCard key={prd.sku} product={prd}/>
       ))}
     </Box>
   );

@@ -1,4 +1,3 @@
-import { OrderSummary } from './../features/orders/components/OrderSummary';
 import type { UserDto } from "./User.ts";
 import type { ProductSummaryDto } from "./Product.ts";
 
@@ -25,6 +24,7 @@ export interface OrderSummary {
 
 export interface CreateOrderDto {
   details: OrderDetailRequestDto[],
+  couponCode?: string | null,
 }
 
 export interface OrderDetailResponseDto {
@@ -36,7 +36,7 @@ export interface OrderDetailResponseDto {
 
 export interface OrderDetailRequestDto {
   quantity: number,
-  productId: number,
+  productSku: string,
 }
 
 // Equivalente al enum de C#

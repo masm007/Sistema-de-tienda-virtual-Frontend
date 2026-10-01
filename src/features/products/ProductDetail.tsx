@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import type { Product } from "../../types/Product";
-import { getProductById } from "../../services/ProductService";
+import { useNavigate, useParams } from "react-router-dom";
+import type { ProductRequest } from "../../types/Product";
+import { getProductById, getProductBySku } from "../../services/ProductService";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -12,9 +12,10 @@ import { useNotification } from "../../hooks/useNotification";
 type Props = {};
 
 export const ProductDetail = (props: Props) => {
-  const { id } = useParams();
+  const { sku } = useParams();
+  const navigate = useNavigate();
   const { addToCart } = useCart();
-  const [product, setProduct] = useState<Product>();
+  const [product, setProduct] = useState<ProductRequest>();
   const [value, setValue] = React.useState("one");
   const [quantity, setQuantity] = useState("");
   const { error, success } = useNotification();
@@ -48,12 +49,20 @@ export const ProductDetail = (props: Props) => {
 
   useEffect(() => {
     const loadProduct = async () => {
-      const productId = Number(id);
-      if (Number.isNaN(productId)) {
+      if (!sku || sku.trim().length === 0) {
         return;
       }
-      const response = await getProductById(productId);
-      setProduct(response);
+      try {
+        const response = await getProductBySku(sku);
+        setProduct(response);
+      } catch (err) {
+        if (err instanceof Error) {
+          error(err.message, "Obtener producto");
+        } else {
+          error("Ocurrió un error inesperado.", "Obtener producto");
+        }
+        navigate("/404");
+      }
     };
     loadProduct();
   }, []);

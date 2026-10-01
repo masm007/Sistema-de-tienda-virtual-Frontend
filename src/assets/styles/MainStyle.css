@@ -150,7 +150,7 @@ img.infoElement:hover {
 
 .Footer {
   /*  min-height: 40vh; */
-  width: 100vw;
+  width: 100%;
   background-image: linear-gradient(to bottom, #78bf9e, #4ea664);
   text-align: center;
   display: flex;

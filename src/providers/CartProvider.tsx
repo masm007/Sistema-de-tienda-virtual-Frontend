@@ -1,18 +1,18 @@
 import { createContext, useEffect, useState, type ReactNode } from "react";
-import type { Product } from "../types/Product";
+import type { ProductRequest } from "../types/Product";
 import { STORAGE_KEYS } from "../constants/storage";
 
 type CartItem = {
-  product: Product;
+  product: ProductRequest;
   quantity: number;
 };
 
 type CartContextType = {
   cart: CartItem[];
-  addToCart: (product: Product, quantity: number) => void;
+  addToCart: (product: ProductRequest, quantity: number) => void;
   getSubtotal: () => number;
-  deleteProduct: (id: number) => void;
-  changeQuantity: (id: number, quantity: number) => void;
+  deleteProduct: (sku: string) => void;
+  changeQuantity: (sku: string, quantity: number) => void;
   emptyCart: () => void;
 };
 
@@ -44,7 +44,7 @@ export const CartProvider = ({ children }: Props) => {
     localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (product: Product, quantity: number) => {
+  const addToCart = (product: ProductRequest, quantity: number) => {
     if (quantity <= 0) {
       throw new Error("La cantidad debe ser mayor que cero.");
     }
@@ -55,7 +55,7 @@ export const CartProvider = ({ children }: Props) => {
     }
     setCart((currentCart) => {
       const existingItem = currentCart.find(
-        (item) => item.product.id === product.id,
+        (item) => item.product.sku === product.sku,
       );
       if (existingItem) {
         const newQuantity = existingItem.quantity + quantity;
@@ -67,7 +67,7 @@ export const CartProvider = ({ children }: Props) => {
         }
 
         return currentCart.map((item) =>
-          item.product.id === product.id
+          item.product.sku === product.sku
             ? { ...item, quantity: newQuantity }
             : item,
         );
@@ -85,19 +85,19 @@ export const CartProvider = ({ children }: Props) => {
     return subtotal;
   };
 
-  const deleteProduct = (id: number) => {
+  const deleteProduct = (sku: string) => {
     setCart((currentCart) =>
-      currentCart.filter((item) => item.product.id !== id),
+      currentCart.filter((item) => item.product.sku !== sku),
     );
   };
 
-  const changeQuantity = (id: number, quantity: number) => {
-    const existingItem = cart.find((item) => item.product.id === id);
+  const changeQuantity = (sku: string, quantity: number) => {
+    const existingItem = cart.find((item) => item.product.sku === sku);
     if (!existingItem) {
       return;
     }
     if (quantity <= 0) {
-      deleteProduct(id);
+      deleteProduct(sku);
       return;
     }
     if (quantity > existingItem.product.quantity) {
@@ -105,7 +105,7 @@ export const CartProvider = ({ children }: Props) => {
     }
     setCart((currentCart) =>
       currentCart.map((item) =>
-        item.product.id === id ? { ...item, quantity } : item,
+        item.product.sku === sku ? { ...item, quantity } : item,
       ),
     );
   };
